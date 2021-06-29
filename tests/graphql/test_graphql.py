@@ -1121,6 +1121,47 @@ def test_special_case_project_id(
         }
     }
 
+def test_special_case_person (
+    client,
+    submitter,
+    pg_driver_clean,
+    cgci_blgsp,
+    put_tcga_brca,
+    mock_arborist_requests,
+):
+    data = json.dumps(
+        {
+            "query": """
+            {
+                valid: project (project_id: "pcdc-20210223", type: "person") { ...f }
+            }
+            fragment f on project { project_id submitter_id type }
+        """
+        }
+    )
+
+    # the user has read access to persons
+    mock_arborist_requests(
+        auth_mapping={ 
+            "/programs/pcdc/projects/20210223/persons/person_158618": [
+                {"service": "peregrine", "method": "read"}
+            ],
+            "/programs/pcdc/projects/20210223/persons/person_358206": [
+                {"service": "peregrine", "method": "read"}
+            ]
+        }
+    )
+
+    r = client.post(path, headers=submitter, data=data)
+    print(r.data)
+    
+    assert r.json == {
+        "data": {
+            "valid":  [{"project_id": "pcdc-20210223", "type": "person"}]
+        }
+    }
+
+
 
 def test_catch_language_error(client, submitter, pg_driver_clean, cgci_blgsp):
     post_example_entities_together(client, pg_driver_clean, submitter)
