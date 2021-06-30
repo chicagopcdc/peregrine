@@ -25,6 +25,7 @@ data_fnames = [
     "diagnosis.json",
     "exposure.json",
     "treatment.json",
+    "person1.json",
 ]
 
 PATH = "/v0/submission/graphql"

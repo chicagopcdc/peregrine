@@ -56,7 +56,7 @@ def get_datasets():
     result = {project_id: {} for project_id in projects}
 
     for name, value in data.items():
-        match = re.search("^i(\d+)_(.*)", name)
+        match = re.search(r"^i(\d+)_(.*)", name)
         index = int(match.group(1))
         node = match.group(2)
         result[projects[index]][node] = value

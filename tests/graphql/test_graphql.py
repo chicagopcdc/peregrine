@@ -1133,20 +1133,22 @@ def test_special_case_person (
         {
             "query": """
             {
-                valid: project (project_id: "pcdc-20210223", type: "person") { ...f }
+                valid: project (project_id: "CGCI-BLGSP", type: "person") { ...f }
             }
-            fragment f on project { project_id submitter_id type }
+            fragment f on project { project_id submitter_id }
         """
         }
     )
 
+    print(data)
+
     # the user has read access to persons
     mock_arborist_requests(
         auth_mapping={ 
-            "/programs/pcdc/projects/20210223/persons/person_158618": [
+            "/programs/CGCI/projects/BLGSP": [
                 {"service": "peregrine", "method": "read"}
             ],
-            "/programs/pcdc/projects/20210223/persons/person_358206": [
+            "/programs/CGCI/projects/BLGSP": [
                 {"service": "peregrine", "method": "read"}
             ]
         }
@@ -1157,7 +1159,9 @@ def test_special_case_person (
     
     assert r.json == {
         "data": {
-            "valid":  [{"project_id": "pcdc-20210223", "type": "person"}]
+            "valid":  [{"project_id": "CGCI-BLGSP", "type": "person"}],
+            "invalid": [],
+            "multiple": [],
         }
     }
 

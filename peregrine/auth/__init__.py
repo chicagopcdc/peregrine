@@ -28,7 +28,7 @@ def resource_path_to_project_ids(resource_path):
         return []
 
     if len(parts) > 8 or (len(parts) > 2 and parts[2] != "projects") or (len(parts) > 4 and (flask.current_app.subject_entity is None or parts[4] != "persons")) or (len(parts) > 6 and (flask.current_app.node_authz_entity_name is None or flask.current_app.node_authz_entity is None or parts[6] != (flask.current_app.node_authz_entity_name + "s"))):
-        logger.warn(
+        logger.warning(
             "ignoring resource path {} because peregrine cannot handle a permission more granular than program/project/node level".format(
                 resource_path
             )
@@ -52,7 +52,7 @@ def resource_path_to_project_ids(resource_path):
             flask.current_app.db.nodes(models.Program).props(name=program_name).first()
         )
         if not program:
-            logger.warn(
+            logger.warning(
                 "program {} in resource path {} does not exist".format(
                     program_name, resource_path
                 )
@@ -68,7 +68,7 @@ def resource_path_to_project_ids(resource_path):
             flask.current_app.db.nodes(models.Project).props(code=project_code).first()
         )
         if not project:
-            logger.warn(
+            logger.warning(
                 "project {} in resource path {} does not exist".format(
                     project_code, resource_path
                 )
@@ -101,7 +101,7 @@ def get_read_access_resources():
         mapping = flask.current_app.auth.auth_mapping(current_user.username)
     except ArboristError as e:
         # Arborist errored, or this user is unknown to Arborist
-        logger.warn(
+        logger.warning(
             "Unable to retrieve auth mapping for user `{}`: {}".format(
                 current_user.username, e
             )
