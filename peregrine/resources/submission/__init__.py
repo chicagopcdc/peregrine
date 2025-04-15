@@ -103,11 +103,11 @@ def do_graphql_query(query, variables):
     # Short circuit if user is not recognized. Make sure that the list of
     # projects that the user has read access to is set.
     flask.current_app.logger.warn("QUERY INIZIATA")
-    try:
-        set_read_access_projects()
-    except AuthZError:
-        data = flask.jsonify({"data": {}, "errors": ["Unauthorized query."]})
-        return data, 403
+    # try:
+    #     set_read_access_projects()
+    # except AuthZError:
+    #     data = flask.jsonify({"data": {}, "errors": ["Unauthorized query."]})
+    #     return data, 403
     return graphql.execute_query(query, variables)
 
 
