@@ -123,6 +123,8 @@ def authorization_filter(q):
     subjectNode = capp.subject_entity
     ands = []
 
+    return q
+
     if cls != models.Project and cls != models.Program and cls != subjectNode and authLeafNode is not None:
         # if the node is below the subject level than find its path to the subject node and join the needed tables
         if cls != authLeafNode:
