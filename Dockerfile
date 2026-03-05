@@ -2,11 +2,15 @@ ARG AZLINUX_BASE_VERSION=3.13-pythonnginx
 
 FROM quay.io/cdis/amazonlinux-base:${AZLINUX_BASE_VERSION} AS base
 
+USER root
+
 ENV appname=peregrine
 
 WORKDIR /${appname}
 
 RUN chown -R gen3:gen3 /${appname}
+
+USER gen3
 
 # Builder stage
 FROM base AS builder
